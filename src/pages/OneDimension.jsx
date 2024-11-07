@@ -8,8 +8,8 @@ import {
   Tooltip,
 } from "recharts";
 import { learningRate } from "../utils/learningRate";
-import { useGenerateData } from "../utils/useGenerateData";
-import { useTrainingStep } from "../utils/useTrainingStep";
+import { useGenerateData } from "../utils/OneDimension/useGenerateData";
+import { useTrainingStep } from "../utils/OneDimension/useTrainingStep";
 
 const OneD = () => {
   const { data, setData, generateData } = useGenerateData();
@@ -17,7 +17,13 @@ const OneD = () => {
   const [isTraining, setIsTraining] = useState(false);
   const [speed, setSpeed] = useState(50);
 
-  const trainingStep = useTrainingStep(data, setData, iteration, setIteration);
+  const trainingStep = useTrainingStep(
+    data,
+    setData,
+    iteration,
+    setIteration,
+    false
+  );
 
   useEffect(() => {
     let intervalId;

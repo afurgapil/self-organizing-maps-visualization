@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   ScatterChart,
   Scatter,
@@ -7,106 +7,21 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-
+import { useGenerateData } from "../utils/TwoDimension/useGenerateData";
+import { useTrainingStep } from "../utils/TwoDimension/useTrainingStep";
 const TwoDimThree = () => {
-  const [data, setData] = useState({ X: [], labels: [], W: [] });
+  const { data, setData, generateData } = useGenerateData(36);
   const [iteration, setIteration] = useState(0);
   const [isTraining, setIsTraining] = useState(false);
   const [speed, setSpeed] = useState(50);
-  const NUM_WEIGHTS = 36;
 
-  const generateData = useCallback(() => {
-    const X = [];
-    const labels = [];
-
-    for (let i = 0; i < 50; i++) {
-      X.push({
-        x: randomNormal(-5, 1),
-        y: randomNormal(-5, 1),
-        label: 0,
-      });
-      labels.push(0);
-    }
-
-    for (let i = 0; i < 50; i++) {
-      X.push({
-        x: randomNormal(5, 1),
-        y: randomNormal(5, 1),
-        label: 1,
-      });
-      labels.push(1);
-    }
-
-    const W = [];
-    for (let i = 0; i < NUM_WEIGHTS; i++) {
-      W.push({
-        x: randomNormal(0, 6),
-        y: randomNormal(0, 6),
-        type: "weight",
-      });
-    }
-
-    setData({ X, labels, W });
-  }, []);
-
-  const randomNormal = (mean = 0, std = 1) => {
-    let u = 0,
-      v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return (
-      mean + std * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
-    );
-  };
-
-  const distance = (p1, p2) => {
-    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-  };
-
-  const neighborhood = (dist, sigma) => {
-    return Math.exp(-(dist * dist) / (2 * sigma * sigma));
-  };
-
-  const trainingStep = useCallback(() => {
-    setData((prevData) => {
-      const { X, W } = prevData;
-
-      const randomIndex = Math.floor(Math.random() * X.length);
-      const x = X[randomIndex];
-
-      let minDist = Infinity;
-      let bmuIndex = 0;
-
-      W.forEach((w, index) => {
-        const dist = distance(x, w);
-        if (dist < minDist) {
-          minDist = dist;
-          bmuIndex = index;
-        }
-      });
-
-      const initialSigma = 3;
-      const sigma = initialSigma * Math.exp(-iteration / 1000);
-
-      const bmu = W[bmuIndex];
-      const newW = W.map((w) => {
-        const dist = distance(w, bmu);
-        const neighborhoodEffect = neighborhood(dist, sigma);
-
-        return {
-          ...w,
-          x: w.x + 0.1 * neighborhoodEffect * (x.x - w.x),
-          y: w.y + 0.1 * neighborhoodEffect * (x.y - w.y),
-          //Learning Rate
-        };
-      });
-
-      return { ...prevData, W: newW };
-    });
-
-    setIteration((prev) => prev + 1);
-  }, [iteration]);
-
+  const trainingStep = useTrainingStep(
+    data,
+    setData,
+    iteration,
+    setIteration,
+    true
+  );
   useEffect(() => {
     let intervalId;
     if (isTraining) {

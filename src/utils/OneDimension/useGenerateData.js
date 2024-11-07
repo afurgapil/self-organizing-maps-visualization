@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { randomNormal } from "./randomNormal";
+import { randomNormal } from "../randomNormal";
 export const useGenerateData = () => {
   const [data, setData] = useState({ X: [], labels: [], W: [] });
 

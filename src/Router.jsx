@@ -10,7 +10,7 @@ import OneDimConstantRate from "./pages/OneDimensionConstantRate";
 import TwoDimUpdate from "./pages/TwoDimensionSquare";
 import TwoDimThree from "./pages/TwoDimension";
 import TwoDimFourth from "./pages/TwoDimensionConstRate";
-import FeatureSelection from "./features/FeatureSelection";
+// import FeatureSelection from "./features/FeatureSelection";
 import Header from "./components/Header";
 import Layout from "./layout/Layout";
 import Home from "./pages/Home";

@@ -1,8 +1,26 @@
-# React + Vite
+## self-organizing-maps-visualization
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project provides visualization of self-organizing maps using **React** and **Vite**.
 
-Currently, two official plugins are available:
+### About
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project offers a tool to visualize self-organizing maps interactively. Users can upload data and observe how the self-organizing map is created in real-time.
+
+### Features
+
+- Data upload and processing
+- Self-organizing map generation
+- Interactive visualization
+- Customizable parameters
+
+### Usage
+
+1. Clone the project: `git clone https://github.com/afurgapil/self-organizing-maps-visualization.git`
+2. Install the necessary dependencies: `npm install`
+3. Start the development server: `npm run dev`
+
+### Live Demo
+
+- [api-som.netlify.app/](https://api-som.netlify.app/)
+
+![gif](https://github.com/user-attachments/assets/dd9f1d9a-8884-4f15-9da3-d6bcd7943f0f)

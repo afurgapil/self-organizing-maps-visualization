@@ -2,12 +2,15 @@ import { useCallback } from "react";
 import { euclideanDistance } from "./euclideanDistance";
 import { learningRate } from "../learningRate";
 import { neighborhood } from "../neighborhood";
-export const useTrainingStep = (
+export const useTwoDimensionTrainingStep = (
   data,
   setData,
   iteration,
   setIteration,
-  isConstant
+  isLearningRateVariable,
+  learningRateInput,
+  isNeighborhoodSizeVariable,
+  neighborhoodSizeInput
 ) => {
   return useCallback(() => {
     setData((prevData) => {
@@ -27,8 +30,13 @@ export const useTrainingStep = (
         }
       });
 
-      const lr = isConstant ? 0.1 : learningRate(iteration);
-      const sigma = Math.max(0.5, 2.0 * Math.exp(-iteration / 1000));
+      const lr = isLearningRateVariable
+        ? learningRate(iteration)
+        : learningRateInput;
+
+      const sigma = isNeighborhoodSizeVariable
+        ? Math.max(0.5, 2.0 * Math.exp(-iteration / 1000))
+        : neighborhoodSizeInput;
 
       const newW = W.map((w, i) => {
         const neighborhoodEffect = neighborhood(Math.abs(i - bmuIndex), sigma);
@@ -43,5 +51,13 @@ export const useTrainingStep = (
     });
 
     setIteration((prev) => prev + 1);
-  }, [data, setData, iteration, setIteration, isConstant]);
+  }, [
+    setData,
+    iteration,
+    setIteration,
+    isLearningRateVariable,
+    learningRateInput,
+    isNeighborhoodSizeVariable,
+    neighborhoodSizeInput,
+  ]);
 };

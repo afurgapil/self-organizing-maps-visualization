@@ -18,15 +18,9 @@ function Home() {
       <div className="grid grid-cols-2 gap-4">
         <Link
           to="/one-dimension"
-          className="block p-4 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-600"
+          className="block p-4 bg-yellow-500 text-white rounded-lg text-center hover:bg-yellow-600"
         >
           One Dimension
-        </Link>
-        <Link
-          to="/one-dimension-constant-learning-rate"
-          className="block p-4 bg-stone-500 text-white rounded-lg text-center hover:bg-stone-600"
-        >
-          One Dimension with Constant Rate
         </Link>
         <Link
           to="/two-dimension"
@@ -34,18 +28,6 @@ function Home() {
         >
           Two Dimension
         </Link>{" "}
-        <Link
-          to="/two-dimension-constant-learning-rate"
-          className="block p-4 bg-red-500 text-white rounded-lg text-center hover:bg-red-600"
-        >
-          Two Dimension with Constant Rate
-        </Link>{" "}
-        <Link
-          to="/two-dimension-square"
-          className="block p-4 bg-yellow-500 text-white rounded-lg text-center hover:bg-yellow-600"
-        >
-          Two Dimension Square Data
-        </Link>
         {/* <Link
           to="/feature-selection"
           className="block p-4 bg-purple-500 text-white rounded-lg text-center hover:bg-purple-600"

@@ -2,12 +2,16 @@ import { useCallback } from "react";
 import { linearDistance } from "./linearDistance";
 import { learningRate } from "../learningRate";
 import { neighborhood } from "../neighborhood";
-export const useTrainingStep = (
+
+export const useOneDimensionTrainingStep = (
   data,
   setData,
   iteration,
   setIteration,
-  isConstant
+  isLearningRateVariable,
+  learningRateInput,
+  isNeighborhoodSizeVariable,
+  neighborhoodSizeInput
 ) => {
   return useCallback(() => {
     setData((prevData) => {
@@ -26,13 +30,14 @@ export const useTrainingStep = (
           bmuIndex = index;
         }
       });
-      let lr = 0;
-      if (isConstant) {
-        lr = 0.1;
-      } else {
-        lr = learningRate(iteration);
-      }
-      const sigma = Math.max(0.5, 2.0 * Math.exp(-iteration / 1000));
+
+      const lr = isLearningRateVariable
+        ? learningRate(iteration)
+        : learningRateInput;
+
+      const sigma = isNeighborhoodSizeVariable
+        ? Math.max(0.5, 2.0 * Math.exp(-iteration / 1000))
+        : neighborhoodSizeInput;
 
       const newW = W.map((w, i) => {
         const neighborhoodEffect = neighborhood(Math.abs(i - bmuIndex), sigma);
@@ -47,5 +52,13 @@ export const useTrainingStep = (
     });
 
     setIteration((prev) => prev + 1);
-  }, [data, setData, iteration, setIteration]);
+  }, [
+    setData,
+    iteration,
+    setIteration,
+    isLearningRateVariable,
+    learningRateInput,
+    isNeighborhoodSizeVariable,
+    neighborhoodSizeInput,
+  ]);
 };

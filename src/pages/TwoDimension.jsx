@@ -95,6 +95,7 @@ const TwoDimension = () => {
   const handleGenerateData = useCallback(() => {
     setIteration(0);
     setMetrics([]);
+    setIsTraining(false);
     generateData();
   }, [generateData]);
 
@@ -139,38 +140,40 @@ const TwoDimension = () => {
 
   const handleCustomPointsChange = (newPoints) => {
     setCustomPoints(newPoints);
+    setDataSize(newPoints.length);
     if (newPoints.length === 0) {
       setShape("triangle");
+      setDataSize(80);
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-3 sm:p-6">
+    <div className="max-w-5xl mx-auto bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-lg shadow-lg p-3 sm:p-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+        <h2 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
           Two Dimension Visualization
         </h2>
         <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-          <span className="bg-gray-100 px-2 sm:px-3 py-1 rounded-full text-sm sm:text-base text-gray-700">
+          <span className="bg-blue-50 dark:bg-blue-900/30 px-2 sm:px-3 py-1 rounded-full text-sm sm:text-base text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
             Iteration: {iteration}
           </span>
-          <span className="bg-gray-100 px-2 sm:px-3 py-1 rounded-full text-sm sm:text-base text-gray-700">
+          <span className="bg-indigo-50 dark:bg-indigo-900/30 px-2 sm:px-3 py-1 rounded-full text-sm sm:text-base text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
             Error: {error.toFixed(4)}
           </span>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm mb-6">
         <div className="w-full aspect-[4/3] sm:aspect-[16/9]">
           <ResponsiveContainer width="100%" height="100%">
             <ScatterChart margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
               <XAxis
                 type="number"
                 dataKey="x"
                 domain={[-8, 8]}
                 tickFormatter={(value) => value.toFixed(2)}
-                tick={{ fontSize: 10, fill: "#666" }}
+                tick={{ fontSize: 10, fill: "#6B7280" }}
                 tickCount={8}
                 minTickGap={20}
               />
@@ -179,7 +182,7 @@ const TwoDimension = () => {
                 dataKey="y"
                 domain={[-8, 8]}
                 tickFormatter={(value) => value.toFixed(2)}
-                tick={{ fontSize: 10, fill: "#666" }}
+                tick={{ fontSize: 10, fill: "#6B7280" }}
                 tickCount={8}
                 width={35}
               />
@@ -206,60 +209,60 @@ const TwoDimension = () => {
               setShape("custom");
               setCustomPoints([]);
             }}
-            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+            className={`px-3 py-2 text-sm rounded-lg transition-all ${
               shape === "custom"
-                ? "bg-green-500 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 hover:shadow-sm"
             }`}
           >
             Custom
           </button>
           <button
             onClick={() => setShape("triangle")}
-            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+            className={`px-3 py-2 text-sm rounded-lg transition-all ${
               shape === "triangle"
-                ? "bg-green-500 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 hover:shadow-sm"
             }`}
           >
             Triangle
           </button>
           <button
             onClick={() => setShape("line")}
-            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+            className={`px-3 py-2 text-sm rounded-lg transition-all ${
               shape === "line"
-                ? "bg-green-500 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 hover:shadow-sm"
             }`}
           >
             Line
           </button>
           <button
             onClick={() => setShape("square")}
-            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+            className={`px-3 py-2 text-sm rounded-lg transition-all ${
               shape === "square"
-                ? "bg-green-500 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 hover:shadow-sm"
             }`}
           >
             Square
           </button>
           <button
             onClick={() => setShape("circle")}
-            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+            className={`px-3 py-2 text-sm rounded-lg transition-all ${
               shape === "circle"
-                ? "bg-green-500 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 hover:shadow-sm"
             }`}
           >
             Circle
           </button>
           <button
             onClick={() => setShape("spiral")}
-            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+            className={`px-3 py-2 text-sm rounded-lg transition-all ${
               shape === "spiral"
-                ? "bg-green-500 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 hover:shadow-sm"
             }`}
           >
             Spiral
@@ -301,20 +304,20 @@ const TwoDimension = () => {
           onCustomColorChange={setCustomColors}
         />
 
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 pb-4">
           <button
             onClick={handleTrainingToggle}
-            className={`w-full sm:w-auto px-6 py-2 rounded-lg font-medium transition-colors ${
+            className={`w-full sm:w-auto px-6 py-2 rounded-lg font-medium transition-all ${
               isTraining
-                ? "bg-red-500 hover:bg-red-600 text-white"
-                : "bg-blue-500 hover:bg-blue-600 text-white"
+                ? "bg-gradient-to-r from-red-500 to-pink-500 dark:from-red-600 dark:to-pink-600 text-white shadow-md hover:shadow-lg"
+                : "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md hover:shadow-lg"
             }`}
           >
             {isTraining ? "Stop" : "Start"}
           </button>
           <button
             onClick={handleGenerateData}
-            className="w-full sm:w-auto px-6 py-2 rounded-lg font-medium bg-gray-200 hover:bg-gray-300 text-gray-700 transition-colors"
+            className="w-full sm:w-auto px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200 shadow-md hover:shadow-lg transition-all"
           >
             Reset
           </button>

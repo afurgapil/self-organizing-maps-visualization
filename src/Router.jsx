@@ -31,16 +31,18 @@ function RouterApp() {
 
   return (
     <BrowserRouter>
-      <Header params={publicRoutes} />
-      <Routes>
-        {publicRoutes.map((route) => (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={<Layout>{React.createElement(route.component)}</Layout>}
-          />
-        ))}
-      </Routes>
+      <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
+        <Header params={publicRoutes} />
+        <Routes>
+          {publicRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={<Layout>{React.createElement(route.component)}</Layout>}
+            />
+          ))}
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

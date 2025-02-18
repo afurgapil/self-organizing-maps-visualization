@@ -22,10 +22,10 @@ const ControlPanel = ({
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="bg-white rounded-lg p-3 sm:p-4 mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 mb-4">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="w-full flex items-center justify-between mb-4 text-base sm:text-lg font-semibold text-gray-800 hover:text-gray-600 transition-colors"
+        className="w-full flex items-center justify-between mb-4 text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
       >
         <span>Control Panel</span>
         <svg
@@ -53,7 +53,7 @@ const ControlPanel = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Animation Speed
               </label>
               <div className="flex items-center gap-2">
@@ -64,9 +64,9 @@ const ControlPanel = ({
                   step="5"
                   value={speed}
                   onChange={(e) => onSpeedChange(Number(e.target.value))}
-                  className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  className="flex-1 h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                 />
-                <span className="text-sm text-gray-600 w-8">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-8">
                   {Math.round((speed / 90) * 100)}%
                 </span>
               </div>
@@ -80,9 +80,9 @@ const ControlPanel = ({
                   onChange={(e) =>
                     onLearningRateVariableChange(e.target.checked)
                   }
-                  className="w-4 h-4 text-blue-600 rounded"
+                  className="w-4 h-4 text-blue-600 dark:text-blue-500 rounded"
                 />
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Variable Learning Rate
                 </label>
               </div>
@@ -93,9 +93,9 @@ const ControlPanel = ({
                   onChange={(e) =>
                     onNeighborhoodSizeVariableChange(e.target.checked)
                   }
-                  className="w-4 h-4 text-blue-600 rounded"
+                  className="w-4 h-4 text-blue-600 dark:text-blue-500 rounded"
                 />
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Variable Neighborhood Size
                 </label>
               </div>
@@ -104,9 +104,9 @@ const ControlPanel = ({
                   type="number"
                   value={inputSize}
                   onChange={(e) => onInputSizeChange(Number(e.target.value))}
-                  className="w-20 sm:w-24 px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
+                  className="w-20 sm:w-24 px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md"
                 />
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Weight Points Count
                 </label>
               </div>
@@ -115,9 +115,9 @@ const ControlPanel = ({
                   type="number"
                   value={dataSize}
                   onChange={(e) => onDataSizeChange(Number(e.target.value))}
-                  className="w-20 sm:w-24 px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
+                  className="w-20 sm:w-24 px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md"
                 />
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Data Points Count
                 </label>
               </div>
@@ -125,10 +125,12 @@ const ControlPanel = ({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-              <div className="text-sm text-gray-500 mb-2">Learning Rate</div>
+            <div className="bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 rounded-lg">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                Learning Rate
+              </div>
               {isLearningRateVariable ? (
-                <div className="text-base sm:text-lg font-semibold text-gray-900">
+                <div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {currentLearningRate.toFixed(4)}
                 </div>
               ) : (
@@ -138,16 +140,16 @@ const ControlPanel = ({
                   onChange={(e) =>
                     onLearningRateInputChange(Number(e.target.value))
                   }
-                  className="w-full px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
+                  className="w-full px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md"
                 />
               )}
             </div>
-            <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-              <div className="text-sm text-gray-500 mb-2">
+            <div className="bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 rounded-lg">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                 Neighborhood Size
               </div>
               {isNeighborhoodSizeVariable ? (
-                <div className="text-base sm:text-lg font-semibold text-gray-900">
+                <div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {neighborhoodSize.toFixed(2)}
                 </div>
               ) : (
@@ -157,7 +159,7 @@ const ControlPanel = ({
                   onChange={(e) =>
                     onNeighborhoodSizeInputChange(Number(e.target.value))
                   }
-                  className="w-full px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
+                  className="w-full px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md"
                 />
               )}
             </div>

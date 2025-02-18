@@ -7,6 +7,7 @@ const CustomShapeDrawer = ({ onPointsChange, customColors }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const lastPointRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(true);
 
   const addPoint = (e) => {
     const rect = canvasRef.current.getBoundingClientRect();
@@ -108,31 +109,62 @@ const CustomShapeDrawer = ({ onPointsChange, customColors }) => {
   }, []);
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-gray-800">Custom Shape</h3>
-        <button
-          onClick={clearPoints}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Clear
-        </button>
-      </div>
-      <div
-        ref={containerRef}
-        className="relative w-full h-[300px] border border-gray-300 rounded"
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 mb-4">
+      <button
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="w-full flex items-center justify-between mb-4 text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
       >
-        <canvas
-          ref={canvasRef}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          className="absolute inset-0 cursor-crosshair"
-        />
+        <span>Shape Settings</span>
+        <svg
+          className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      <div
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${
+          isOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+            Custom Shape
+          </h3>
+          <button
+            onClick={clearPoints}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Clear
+          </button>
+        </div>
+        <div
+          ref={containerRef}
+          className="relative w-full h-[300px] border border-gray-300 rounded dark:border-gray-600"
+        >
+          <canvas
+            ref={canvasRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            className="absolute inset-0 cursor-crosshair"
+          />
+        </div>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          Click and drag to draw points. The points will be used as training
+          data.
+        </p>
       </div>
-      <p className="text-sm text-gray-600">
-        Click and drag to draw points. The points will be used as training data.
-      </p>
     </div>
   );
 };

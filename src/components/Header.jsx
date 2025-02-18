@@ -1,46 +1,57 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
-function Header({ params }) {
-  const publicRoutes = params;
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+const Header = () => {
+  const location = useLocation();
 
   return (
-    <header className="flex flex-col md:flex-row justify-between  w-full text-center bg-blue-500 py-4 text-white  px-4">
-      <div className="flex justify-between items-center w-auto px-4 sm:px-0 border-b border-white mb-2 md:border-none">
-        <h1 className="text-lg font-bold">Api SOM</h1>
-        <button className="sm:hidden text-2xl" onClick={toggleMenu}>
-          ☰
-        </button>
-      </div>
-
-      <nav
-        className={`flex flex-col sm:flex-row items-center w-auto sm:w-auto transition-all duration-300 ease-in-out gap-y-2 md:gap-y-0 md:gap-x-2 ${
-          isMenuOpen ? "block" : "hidden sm:flex"
-        }`}
-      >
-        {publicRoutes.map((route) => (
-          <NavLink
-            key={route.path}
-            to={route.path}
-            className="py-2 px-2 border border-white rounded-md w-full md:w-auto "
-            activeclassname="active"
-            onClick={closeMenu}
+    <header className="bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 shadow-md">
+      <nav className="container mx-auto px-4 py-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Link
+            to="/"
+            className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 hover:opacity-80 transition-opacity"
           >
-            {route.name}
-          </NavLink>
-        ))}
+            SOM Visualization
+          </Link>
+
+          <div className="flex items-center gap-4">
+            <Link
+              to="/"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                location.pathname === "/"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+            >
+              Home
+            </Link>
+            <Link
+              to="/one-dimension"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                location.pathname === "/one-dimension"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+            >
+              1D
+            </Link>
+            <Link
+              to="/two-dimension"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                location.pathname === "/two-dimension"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+            >
+              2D
+            </Link>
+            <ThemeToggle />
+          </div>
+        </div>
       </nav>
     </header>
   );
-}
+};
 
 export default Header;

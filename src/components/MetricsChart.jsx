@@ -15,14 +15,14 @@ const MetricsChart = ({ metrics }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="bg-white rounded-lg p-3 sm:p-4 mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 my-4">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="w-full flex items-center justify-between mb-4 text-base sm:text-lg font-semibold text-gray-800 hover:text-gray-600 transition-colors"
+        className="w-full flex items-center justify-between mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
       >
         <span>Training Analyze</span>
         <svg
-          className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-200 ${
+          className={`w-6 h-6 transform transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
           fill="none"
@@ -40,21 +40,21 @@ const MetricsChart = ({ metrics }) => {
 
       <div
         className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="w-full aspect-[4/3] sm:aspect-[16/9]">
+        <div className="w-full h-[400px] sm:h-[500px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={metrics}
               margin={{
-                top: 5,
+                top: 20,
                 right: 30,
                 left: 20,
-                bottom: 5,
+                bottom: 20,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
               <XAxis
                 dataKey="iteration"
                 label={{
@@ -62,8 +62,9 @@ const MetricsChart = ({ metrics }) => {
                   position: "insideBottom",
                   offset: -5,
                   fontSize: 12,
+                  fill: "#6B7280",
                 }}
-                tick={{ fontSize: 10, fill: "#666" }}
+                tick={{ fontSize: 10, fill: "#6B7280" }}
                 minTickGap={20}
               />
               <YAxis
@@ -73,8 +74,9 @@ const MetricsChart = ({ metrics }) => {
                   angle: -90,
                   position: "insideLeft",
                   fontSize: 12,
+                  fill: "#6B7280",
                 }}
-                tick={{ fontSize: 10, fill: "#666" }}
+                tick={{ fontSize: 10, fill: "#6B7280" }}
                 width={35}
               />
               <YAxis
@@ -85,23 +87,26 @@ const MetricsChart = ({ metrics }) => {
                   angle: 90,
                   position: "insideRight",
                   fontSize: 12,
+                  fill: "#6B7280",
                 }}
-                tick={{ fontSize: 10, fill: "#666" }}
+                tick={{ fontSize: 10, fill: "#6B7280" }}
                 width={35}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.9)",
-                  border: "1px solid #ccc",
+                  backgroundColor: "rgba(31, 41, 55, 0.9)",
+                  border: "1px solid #4B5563",
                   borderRadius: "4px",
                   fontSize: "12px",
                   padding: "4px 8px",
+                  color: "#F3F4F6",
                 }}
               />
               <Legend
                 wrapperStyle={{
                   fontSize: "12px",
                   paddingTop: "10px",
+                  color: "#6B7280",
                 }}
               />
               <Line

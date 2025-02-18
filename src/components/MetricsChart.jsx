@@ -15,12 +15,12 @@ const MetricsChart = ({ metrics }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="bg-white rounded-lg mb-6 p-4">
+    <div className="bg-white rounded-lg p-4 mb-4">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className="w-full flex items-center justify-between mb-4 text-lg font-semibold text-gray-800 hover:text-gray-600 transition-colors"
       >
-        <span>Training Metrics</span>
+        <span>Training Analyze</span>
         <svg
           className={`w-6 h-6 transform transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
@@ -44,50 +44,37 @@ const MetricsChart = ({ metrics }) => {
         }`}
       >
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={metrics}>
+          <LineChart
+            data={metrics}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="iteration"
-              label={{
-                value: "Iteration",
-                position: "insideBottom",
-                offset: -5,
-              }}
-            />
-            <YAxis
-              yAxisId="error"
-              label={{ value: "Error", angle: -90, position: "insideLeft" }}
-            />
-            <YAxis
-              yAxisId="rate"
-              orientation="right"
-              label={{ value: "Rates", angle: 90, position: "insideRight" }}
-            />
+            <XAxis dataKey="iteration" />
+            <YAxis />
             <Tooltip />
             <Legend />
             <Line
-              yAxisId="error"
               type="monotone"
               dataKey="error"
-              stroke="#8884d8"
+              stroke="#ef4444"
               name="Error"
-              dot={false}
             />
             <Line
-              yAxisId="rate"
               type="monotone"
               dataKey="learningRate"
-              stroke="#82ca9d"
+              stroke="#3b82f6"
               name="Learning Rate"
-              dot={false}
             />
             <Line
-              yAxisId="rate"
               type="monotone"
               dataKey="neighborhoodSize"
-              stroke="#ffc658"
+              stroke="#10b981"
               name="Neighborhood Size"
-              dot={false}
             />
           </LineChart>
         </ResponsiveContainer>

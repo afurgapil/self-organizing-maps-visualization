@@ -160,16 +160,6 @@ const OneDimension = () => {
         dataPoints={chartData.dataPoints}
         weights={chartData.weights}
       />
-
-      <ColorPicker
-        selectedPalette={selectedPalette}
-        onPaletteChange={setSelectedPalette}
-        customColors={customColors}
-        onCustomColorChange={setCustomColors}
-      />
-
-      <MetricsChart metrics={metrics} />
-
       <ControlPanel
         speed={speed}
         onSpeedChange={setSpeed}
@@ -187,6 +177,15 @@ const OneDimension = () => {
         onNeighborhoodSizeInputChange={setNeighborhoodSizeInput}
         currentLearningRate={currentLearningRate}
         neighborhoodSize={neighborhoodSize}
+      />
+
+      <MetricsChart metrics={metrics} />
+
+      <ColorPicker
+        selectedPalette={selectedPalette}
+        onPaletteChange={setSelectedPalette}
+        customColors={customColors}
+        onCustomColorChange={setCustomColors}
       />
 
       <div className="flex justify-center space-x-4">

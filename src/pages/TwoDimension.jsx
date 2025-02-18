@@ -13,15 +13,19 @@ import { useTwoDimensionTrainingStep } from "../utils/TwoDimension/useTrainingSt
 import { learningRate } from "../utils/learningRate";
 import MetricsChart from "../components/MetricsChart";
 import ColorPicker from "../components/ColorPicker";
+import CustomShapeDrawer from "../components/CustomShapeDrawer";
+import ControlPanel from "../components/ControlPanel";
 
 const TwoDimension = () => {
   const [shape, setShape] = useState("triangle");
   const [inputSize, setInputSize] = useState(36);
   const [dataSize, setDataSize] = useState(80);
+  const [customPoints, setCustomPoints] = useState([]);
   const { data, setData, generateData } = useGenerateData(
     inputSize,
     dataSize,
-    shape
+    shape,
+    customPoints
   );
   const [iteration, setIteration] = useState(0);
   const [isTraining, setIsTraining] = useState(false);
@@ -133,6 +137,13 @@ const TwoDimension = () => {
     handleGenerateData();
   }, [handleGenerateData]);
 
+  const handleCustomPointsChange = (newPoints) => {
+    setCustomPoints(newPoints);
+    if (newPoints.length === 0) {
+      setShape("triangle");
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-6">
       <div className="flex items-center justify-between mb-6">
@@ -148,6 +159,7 @@ const TwoDimension = () => {
           </span>
         </div>
       </div>
+
       <div className="bg-white rounded-lg mb-6">
         <ResponsiveContainer width="100%" height={300}>
           <ScatterChart
@@ -184,6 +196,88 @@ const TwoDimension = () => {
           </ScatterChart>
         </ResponsiveContainer>
 
+        <div className="flex items-center gap-2 flex-wrap my-4">
+          <button
+            onClick={() => {
+              setShape("custom");
+              setCustomPoints([]);
+            }}
+            className={`px-4 py-2 rounded ${
+              shape === "custom" ? "bg-green-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            Custom
+          </button>
+          <button
+            onClick={() => setShape("triangle")}
+            className={`px-4 py-2 rounded ${
+              shape === "triangle" ? "bg-green-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            Triangle
+          </button>
+          <button
+            onClick={() => setShape("line")}
+            className={`px-4 py-2 rounded ${
+              shape === "line" ? "bg-green-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            Line
+          </button>
+          <button
+            onClick={() => setShape("square")}
+            className={`px-4 py-2 rounded ${
+              shape === "square" ? "bg-green-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            Square
+          </button>
+          <button
+            onClick={() => setShape("circle")}
+            className={`px-4 py-2 rounded ${
+              shape === "circle" ? "bg-green-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            Circle
+          </button>
+          <button
+            onClick={() => setShape("spiral")}
+            className={`px-4 py-2 rounded ${
+              shape === "spiral" ? "bg-green-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            Spiral
+          </button>
+        </div>
+
+        {shape === "custom" && (
+          <CustomShapeDrawer
+            onPointsChange={handleCustomPointsChange}
+            customColors={customColors}
+          />
+        )}
+
+        <ControlPanel
+          speed={speed}
+          onSpeedChange={setSpeed}
+          isLearningRateVariable={isLearningRateVariable}
+          onLearningRateVariableChange={setIsLearningRateVariable}
+          isNeighborhoodSizeVariable={isNeighborhoodSizeVariable}
+          onNeighborhoodSizeVariableChange={setIsNeighborhoodSizeVariable}
+          inputSize={inputSize}
+          onInputSizeChange={setInputSize}
+          dataSize={dataSize}
+          onDataSizeChange={setDataSize}
+          learningRateInput={learningRateInput}
+          onLearningRateInputChange={setLearningRateInput}
+          neighborhoodSizeInput={neighborhoodSizeInput}
+          onNeighborhoodSizeInputChange={setNeighborhoodSizeInput}
+          currentLearningRate={currentLearningRate}
+          neighborhoodSize={neighborhoodSize}
+        />
+
+        <MetricsChart metrics={metrics} />
+
         <ColorPicker
           selectedPalette={selectedPalette}
           onPaletteChange={setSelectedPalette}
@@ -191,140 +285,7 @@ const TwoDimension = () => {
           onCustomColorChange={setCustomColors}
         />
 
-        <MetricsChart metrics={metrics} />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Animation Speed
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="90"
-                step="5"
-                value={speed}
-                onChange={(e) => setSpeed(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShape("triangle")}
-                className={`px-4 py-2 rounded ${
-                  shape === "triangle"
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-300"
-                }`}
-              >
-                Triangle
-              </button>
-              <button
-                onClick={() => setShape("line")}
-                className={`px-4 py-2 rounded ${
-                  shape === "line" ? "bg-green-500 text-white" : "bg-gray-300"
-                }`}
-              >
-                Line
-              </button>
-              <button
-                onClick={() => setShape("square")}
-                className={`px-4 py-2 rounded ${
-                  shape === "square" ? "bg-green-500 text-white" : "bg-gray-300"
-                }`}
-              >
-                Square
-              </button>
-            </div>
-
-            <div className="flex flex-col items-start gap-2">
-              <div className="flex flex-row justify-start items-center gap-x-2">
-                <input
-                  type="checkbox"
-                  checked={isLearningRateVariable}
-                  onChange={(e) => setIsLearningRateVariable(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 rounded"
-                />
-                <label className="text-sm font-medium text-gray-700">
-                  Variable Learning Rate
-                </label>
-              </div>
-              <div className="flex flex-row justify-start items-center gap-x-2">
-                <input
-                  type="checkbox"
-                  checked={isNeighborhoodSizeVariable}
-                  onChange={(e) =>
-                    setIsNeighborhoodSizeVariable(e.target.checked)
-                  }
-                  className="w-4 h-4 text-blue-600 rounded"
-                />
-                <label className="text-sm font-medium text-gray-700">
-                  Variable Neighborhood Size
-                </label>
-              </div>
-              <div className="flex flex-row justify-start items-center gap-x-2">
-                <input
-                  type="number"
-                  value={inputSize}
-                  onChange={(e) => setInputSize(Number(e.target.value))}
-                  className="w-1/4 px-2 py-1 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
-                />
-                <label className="text-sm font-medium text-gray-700">
-                  Input Size
-                </label>
-              </div>
-              <div className="flex flex-row justify-start items-center gap-x-2">
-                <input
-                  type="number"
-                  value={dataSize}
-                  onChange={(e) => setDataSize(Number(e.target.value))}
-                  className="w-1/4 px-2 py-1 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
-                />
-                <label className="text-sm font-medium text-gray-700">
-                  Data Size
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="text-sm text-gray-500">Learning Rate</div>
-              {isLearningRateVariable ? (
-                <div className="text-lg font-semibold text-gray-900">
-                  {currentLearningRate.toFixed(4)}
-                </div>
-              ) : (
-                <input
-                  type="number"
-                  value={learningRateInput}
-                  onChange={(e) => setLearningRateInput(Number(e.target.value))}
-                  className="w-full px-2 py-1 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
-                />
-              )}
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="text-sm text-gray-500">Neighborhood Size</div>
-              {isNeighborhoodSizeVariable ? (
-                <div className="text-lg font-semibold text-gray-900">
-                  {neighborhoodSize.toFixed(2)}
-                </div>
-              ) : (
-                <input
-                  type="number"
-                  value={neighborhoodSizeInput}
-                  onChange={(e) =>
-                    setNeighborhoodSizeInput(Number(e.target.value))
-                  }
-                  className="w-full px-2 py-1 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
-                />
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-4 mt-4">
           <button
             onClick={handleTrainingToggle}
             className={`px-6 py-2 rounded-lg font-medium ${

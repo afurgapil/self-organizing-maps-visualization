@@ -27,6 +27,41 @@ const predefinedPalettes = {
     weights: "#7e22ce",
     opacity: 0.7,
   },
+  neon: {
+    dataPoints: "#f0abfc",
+    weights: "#db2777",
+    opacity: 0.7,
+  },
+  earth: {
+    dataPoints: "#78350f",
+    weights: "#a16207",
+    opacity: 0.7,
+  },
+  night: {
+    dataPoints: "#1e293b",
+    weights: "#475569",
+    opacity: 0.7,
+  },
+  candy: {
+    dataPoints: "#ec4899",
+    weights: "#be185d",
+    opacity: 0.7,
+  },
+  nature: {
+    dataPoints: "#65a30d",
+    weights: "#166534",
+    opacity: 0.7,
+  },
+  fire: {
+    dataPoints: "#dc2626",
+    weights: "#991b1b",
+    opacity: 0.7,
+  },
+  custom: {
+    dataPoints: "#000000",
+    weights: "#ef4444",
+    opacity: 0.6,
+  },
 };
 
 const ColorPicker = ({
@@ -38,12 +73,18 @@ const ColorPicker = ({
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
-    // Seçilen paletin renklerini customColors'a uygula
-    const selectedColors = predefinedPalettes[selectedPalette];
-    if (selectedColors) {
-      onCustomColorChange(selectedColors);
+    if (selectedPalette !== "custom") {
+      onCustomColorChange(predefinedPalettes[selectedPalette]);
     }
   }, [selectedPalette, onCustomColorChange]);
+
+  const handleColorChange = (key, value) => {
+    onCustomColorChange({
+      ...customColors,
+      [key]: value,
+    });
+    onPaletteChange("custom");
+  };
 
   return (
     <div className="bg-white rounded-lg p-4 mb-4">
@@ -74,24 +115,22 @@ const ColorPicker = ({
           isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        {/* Predefined Palettes */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Color Palette
           </label>
-          <div className="flex gap-2 flex-wrap">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
             {Object.entries(predefinedPalettes).map(([name, colors]) => (
               <button
                 key={name}
                 onClick={() => onPaletteChange(name)}
-                className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm
-                  ${
-                    selectedPalette === name
-                      ? "ring-2 ring-blue-500 ring-offset-2"
-                      : "hover:bg-gray-100"
-                  }`}
+                className={`flex flex-col items-center p-2 rounded border ${
+                  selectedPalette === name
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-gray-200 hover:bg-gray-50"
+                }`}
               >
-                <div className="flex gap-1">
+                <div className="flex gap-1 mb-1">
                   <div
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: colors.dataPoints }}
@@ -101,68 +140,63 @@ const ColorPicker = ({
                     style={{ backgroundColor: colors.weights }}
                   />
                 </div>
-                <span className="capitalize">{name}</span>
+                <span className="text-xs capitalize">{name}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Custom Colors */}
-        <div className="space-y-3">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Data Points Color
-            </label>
-            <input
-              type="color"
-              value={customColors.dataPoints}
-              onChange={(e) =>
-                onCustomColorChange({
-                  ...customColors,
-                  dataPoints: e.target.value,
-                })
-              }
-              className="h-8 w-24"
-            />
+        {selectedPalette === "custom" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Data Points Color
+                </label>
+                <input
+                  type="color"
+                  value={customColors.dataPoints}
+                  onChange={(e) =>
+                    handleColorChange("dataPoints", e.target.value)
+                  }
+                  className="w-full h-10 p-1 rounded border border-gray-300"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Weights Color
+                </label>
+                <input
+                  type="color"
+                  value={customColors.weights}
+                  onChange={(e) => handleColorChange("weights", e.target.value)}
+                  className="w-full h-10 p-1 rounded border border-gray-300"
+                />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Opacity
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={customColors.opacity}
+                  onChange={(e) =>
+                    handleColorChange("opacity", Number(e.target.value))
+                  }
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="text-sm text-gray-500 mt-1">
+                  {Math.round(customColors.opacity * 100)}%
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Weights Color
-            </label>
-            <input
-              type="color"
-              value={customColors.weights}
-              onChange={(e) =>
-                onCustomColorChange({
-                  ...customColors,
-                  weights: e.target.value,
-                })
-              }
-              className="h-8 w-24"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Opacity
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={customColors.opacity * 100}
-              onChange={(e) =>
-                onCustomColorChange({
-                  ...customColors,
-                  opacity: Number(e.target.value) / 100,
-                })
-              }
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-            />
-            <span className="text-sm text-gray-500">
-              {Math.round(customColors.opacity * 100)}%
-            </span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

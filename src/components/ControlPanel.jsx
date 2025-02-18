@@ -22,14 +22,14 @@ const ControlPanel = ({
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="bg-white rounded-lg p-4 mb-4">
+    <div className="bg-white rounded-lg p-3 sm:p-4 mb-4">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="w-full flex items-center justify-between mb-4 text-lg font-semibold text-gray-800 hover:text-gray-600 transition-colors"
+        className="w-full flex items-center justify-between mb-4 text-base sm:text-lg font-semibold text-gray-800 hover:text-gray-600 transition-colors"
       >
         <span>Control Panel</span>
         <svg
-          className={`w-6 h-6 transform transition-transform duration-200 ${
+          className={`w-5 h-5 sm:w-6 sm:h-6 transform transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
           fill="none"
@@ -47,28 +47,33 @@ const ControlPanel = ({
 
       <div
         className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Animation Speed
               </label>
-              <input
-                type="range"
-                min="0"
-                max="90"
-                step="5"
-                value={speed}
-                onChange={(e) => onSpeedChange(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-              />
+              <div className="flex items-center gap-2">
+                <input
+                  type="range"
+                  min="0"
+                  max="90"
+                  step="5"
+                  value={speed}
+                  onChange={(e) => onSpeedChange(Number(e.target.value))}
+                  className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <span className="text-sm text-gray-600 w-8">
+                  {Math.round((speed / 90) * 100)}%
+                </span>
+              </div>
             </div>
 
-            <div className="flex flex-col items-start gap-2">
-              <div className="flex flex-row justify-start items-center gap-x-2">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-x-2">
                 <input
                   type="checkbox"
                   checked={isLearningRateVariable}
@@ -81,7 +86,7 @@ const ControlPanel = ({
                   Variable Learning Rate
                 </label>
               </div>
-              <div className="flex flex-row justify-start items-center gap-x-2">
+              <div className="flex items-center gap-x-2">
                 <input
                   type="checkbox"
                   checked={isNeighborhoodSizeVariable}
@@ -94,23 +99,23 @@ const ControlPanel = ({
                   Variable Neighborhood Size
                 </label>
               </div>
-              <div className="flex flex-row justify-start items-center gap-x-2">
+              <div className="flex items-center gap-x-2">
                 <input
                   type="number"
                   value={inputSize}
                   onChange={(e) => onInputSizeChange(Number(e.target.value))}
-                  className="w-1/4 px-2 py-1 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
+                  className="w-20 sm:w-24 px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
                 />
                 <label className="text-sm font-medium text-gray-700">
                   Weight Points Count
                 </label>
               </div>
-              <div className="flex flex-row justify-start items-center gap-x-2">
+              <div className="flex items-center gap-x-2">
                 <input
                   type="number"
                   value={dataSize}
                   onChange={(e) => onDataSizeChange(Number(e.target.value))}
-                  className="w-1/4 px-2 py-1 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
+                  className="w-20 sm:w-24 px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
                 />
                 <label className="text-sm font-medium text-gray-700">
                   Data Points Count
@@ -119,11 +124,11 @@ const ControlPanel = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="text-sm text-gray-500">Learning Rate</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+              <div className="text-sm text-gray-500 mb-2">Learning Rate</div>
               {isLearningRateVariable ? (
-                <div className="text-lg font-semibold text-gray-900">
+                <div className="text-base sm:text-lg font-semibold text-gray-900">
                   {currentLearningRate.toFixed(4)}
                 </div>
               ) : (
@@ -133,14 +138,16 @@ const ControlPanel = ({
                   onChange={(e) =>
                     onLearningRateInputChange(Number(e.target.value))
                   }
-                  className="w-full px-2 py-1 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
+                  className="w-full px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
                 />
               )}
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="text-sm text-gray-500">Neighborhood Size</div>
+            <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+              <div className="text-sm text-gray-500 mb-2">
+                Neighborhood Size
+              </div>
               {isNeighborhoodSizeVariable ? (
-                <div className="text-lg font-semibold text-gray-900">
+                <div className="text-base sm:text-lg font-semibold text-gray-900">
                   {neighborhoodSize.toFixed(2)}
                 </div>
               ) : (
@@ -150,7 +157,7 @@ const ControlPanel = ({
                   onChange={(e) =>
                     onNeighborhoodSizeInputChange(Number(e.target.value))
                   }
-                  className="w-full px-2 py-1 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
+                  className="w-full px-2 py-1 text-base sm:text-lg font-semibold text-gray-900 border border-gray-300 rounded-md"
                 />
               )}
             </div>

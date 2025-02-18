@@ -145,105 +145,121 @@ const TwoDimension = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">
+    <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-3 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
           Two Dimension Visualization
         </h2>
-        <div className="flex items-center gap-4">
-          <span className="bg-gray-100 px-3 py-1 rounded-full text-gray-700">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+          <span className="bg-gray-100 px-2 sm:px-3 py-1 rounded-full text-sm sm:text-base text-gray-700">
             Iteration: {iteration}
           </span>
-          <span className="bg-gray-100 px-3 py-1 rounded-full text-gray-700">
+          <span className="bg-gray-100 px-2 sm:px-3 py-1 rounded-full text-sm sm:text-base text-gray-700">
             Error: {error.toFixed(4)}
           </span>
         </div>
       </div>
 
       <div className="bg-white rounded-lg mb-6">
-        <ResponsiveContainer width="100%" height={300}>
-          <ScatterChart
-            width={600}
-            height={400}
-            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-          >
-            <CartesianGrid />
-            <XAxis
-              type="number"
-              dataKey="x"
-              domain={[-8, 8]}
-              tickFormatter={(value) => value.toFixed(2)}
-            />
-            <YAxis
-              type="number"
-              dataKey="y"
-              domain={[-8, 8]}
-              tickFormatter={(value) => value.toFixed(2)}
-            />
-            <Tooltip />
-            <Scatter
-              name="Data Points"
-              data={data.X}
-              fill={customColors.dataPoints}
-              opacity={customColors.opacity}
-            />
-            <Scatter
-              name="Weights"
-              data={data.W}
-              fill={customColors.weights}
-              shape="cross"
-            />
-          </ScatterChart>
-        </ResponsiveContainer>
+        <div className="w-full aspect-[4/3] sm:aspect-[16/9]">
+          <ResponsiveContainer width="100%" height="100%">
+            <ScatterChart margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                type="number"
+                dataKey="x"
+                domain={[-8, 8]}
+                tickFormatter={(value) => value.toFixed(2)}
+                tick={{ fontSize: 10, fill: "#666" }}
+                tickCount={8}
+                minTickGap={20}
+              />
+              <YAxis
+                type="number"
+                dataKey="y"
+                domain={[-8, 8]}
+                tickFormatter={(value) => value.toFixed(2)}
+                tick={{ fontSize: 10, fill: "#666" }}
+                tickCount={8}
+                width={35}
+              />
+              <Tooltip />
+              <Scatter
+                name="Data Points"
+                data={data.X}
+                fill={customColors.dataPoints}
+                opacity={customColors.opacity}
+              />
+              <Scatter
+                name="Weights"
+                data={data.W}
+                fill={customColors.weights}
+                shape="cross"
+              />
+            </ScatterChart>
+          </ResponsiveContainer>
+        </div>
 
-        <div className="flex items-center gap-2 flex-wrap my-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 my-4">
           <button
             onClick={() => {
               setShape("custom");
               setCustomPoints([]);
             }}
-            className={`px-4 py-2 rounded ${
-              shape === "custom" ? "bg-green-500 text-white" : "bg-gray-300"
+            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+              shape === "custom"
+                ? "bg-green-500 text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             }`}
           >
             Custom
           </button>
           <button
             onClick={() => setShape("triangle")}
-            className={`px-4 py-2 rounded ${
-              shape === "triangle" ? "bg-green-500 text-white" : "bg-gray-300"
+            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+              shape === "triangle"
+                ? "bg-green-500 text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             }`}
           >
             Triangle
           </button>
           <button
             onClick={() => setShape("line")}
-            className={`px-4 py-2 rounded ${
-              shape === "line" ? "bg-green-500 text-white" : "bg-gray-300"
+            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+              shape === "line"
+                ? "bg-green-500 text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             }`}
           >
             Line
           </button>
           <button
             onClick={() => setShape("square")}
-            className={`px-4 py-2 rounded ${
-              shape === "square" ? "bg-green-500 text-white" : "bg-gray-300"
+            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+              shape === "square"
+                ? "bg-green-500 text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             }`}
           >
             Square
           </button>
           <button
             onClick={() => setShape("circle")}
-            className={`px-4 py-2 rounded ${
-              shape === "circle" ? "bg-green-500 text-white" : "bg-gray-300"
+            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+              shape === "circle"
+                ? "bg-green-500 text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             }`}
           >
             Circle
           </button>
           <button
             onClick={() => setShape("spiral")}
-            className={`px-4 py-2 rounded ${
-              shape === "spiral" ? "bg-green-500 text-white" : "bg-gray-300"
+            className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+              shape === "spiral"
+                ? "bg-green-500 text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             }`}
           >
             Spiral
@@ -285,10 +301,10 @@ const TwoDimension = () => {
           onCustomColorChange={setCustomColors}
         />
 
-        <div className="flex justify-center space-x-4 mt-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
           <button
             onClick={handleTrainingToggle}
-            className={`px-6 py-2 rounded-lg font-medium ${
+            className={`w-full sm:w-auto px-6 py-2 rounded-lg font-medium transition-colors ${
               isTraining
                 ? "bg-red-500 hover:bg-red-600 text-white"
                 : "bg-blue-500 hover:bg-blue-600 text-white"
@@ -298,7 +314,7 @@ const TwoDimension = () => {
           </button>
           <button
             onClick={handleGenerateData}
-            className="px-6 py-2 rounded-lg font-medium bg-gray-200 hover:bg-gray-300 text-gray-700"
+            className="w-full sm:w-auto px-6 py-2 rounded-lg font-medium bg-gray-200 hover:bg-gray-300 text-gray-700 transition-colors"
           >
             Reset
           </button>

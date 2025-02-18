@@ -2,7 +2,15 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { learningRate } from "../utils/learningRate";
 import { useOneDimensionGenerateData } from "../utils/OneDimension/useGenerateData";
 import { useOneDimensionTrainingStep } from "../utils/OneDimension/useTrainingStep";
-import ScatterPlot from "../components/ScatterPlot";
+import {
+  ResponsiveContainer,
+  ScatterChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Scatter,
+} from "recharts";
 import ControlPanel from "../components/ControlPanel";
 import MetricsChart from "../components/MetricsChart";
 import ColorPicker from "../components/ColorPicker";
@@ -141,25 +149,62 @@ const OneDimension = () => {
   );
 
   return (
-    <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">
+    <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-3 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
           One Dimension Visualization
         </h2>
-        <div className="flex items-center gap-4">
-          <span className="bg-gray-100 px-3 py-1 rounded-full text-gray-700">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+          <span className="bg-gray-100 px-2 sm:px-3 py-1 rounded-full text-sm sm:text-base text-gray-700">
             Iteration: {iteration}
           </span>
-          <span className="bg-gray-100 px-3 py-1 rounded-full text-gray-700">
+          <span className="bg-gray-100 px-2 sm:px-3 py-1 rounded-full text-sm sm:text-base text-gray-700">
             Error: {error.toFixed(4)}
           </span>
         </div>
       </div>
 
-      <ScatterPlot
-        dataPoints={chartData.dataPoints}
-        weights={chartData.weights}
-      />
+      <div className="bg-white rounded-lg mb-6">
+        <div className="w-full aspect-[4/3] sm:aspect-[16/9]">
+          <ResponsiveContainer width="100%" height="100%">
+            <ScatterChart margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                type="number"
+                dataKey="x"
+                domain={[-8, 8]}
+                tickFormatter={(value) => value.toFixed(2)}
+                tick={{ fontSize: 10, fill: "#666" }}
+                tickCount={8}
+                minTickGap={20}
+              />
+              <YAxis
+                type="number"
+                dataKey="y"
+                domain={[-1, 1]}
+                tickFormatter={(value) => value.toFixed(2)}
+                tick={{ fontSize: 10, fill: "#666" }}
+                tickCount={8}
+                width={35}
+              />
+              <Tooltip />
+              <Scatter
+                name="Data Points"
+                data={chartData.dataPoints}
+                fill={customColors.dataPoints}
+                opacity={customColors.opacity}
+              />
+              <Scatter
+                name="Weights"
+                data={chartData.weights}
+                fill={customColors.weights}
+                shape="cross"
+              />
+            </ScatterChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
       <ControlPanel
         speed={speed}
         onSpeedChange={setSpeed}
@@ -188,10 +233,10 @@ const OneDimension = () => {
         onCustomColorChange={setCustomColors}
       />
 
-      <div className="flex justify-center space-x-4">
+      <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
         <button
           onClick={handleTrainingToggle}
-          className={`px-6 py-2 rounded-lg font-medium ${
+          className={`w-full sm:w-auto px-6 py-2 rounded-lg font-medium transition-colors ${
             isTraining
               ? "bg-red-500 hover:bg-red-600 text-white"
               : "bg-blue-500 hover:bg-blue-600 text-white"
@@ -201,7 +246,7 @@ const OneDimension = () => {
         </button>
         <button
           onClick={handleGenerateData}
-          className="px-6 py-2 rounded-lg font-medium bg-gray-200 hover:bg-gray-300 text-gray-700"
+          className="w-full sm:w-auto px-6 py-2 rounded-lg font-medium bg-gray-200 hover:bg-gray-300 text-gray-700 transition-colors"
         >
           Reset
         </button>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   ScatterChart,
   Scatter,
@@ -11,6 +11,8 @@ import {
 import { useGenerateData } from "../utils/TwoDimension/useGenerateData";
 import { useTwoDimensionTrainingStep } from "../utils/TwoDimension/useTrainingStep";
 import { learningRate } from "../utils/learningRate";
+import MetricsChart from "../components/MetricsChart";
+import ColorPicker from "../components/ColorPicker";
 
 const TwoDimension = () => {
   const [shape, setShape] = useState("triangle");
@@ -29,29 +31,14 @@ const TwoDimension = () => {
     useState(true);
   const [learningRateInput, setLearningRateInput] = useState(0.1);
   const [neighborhoodSizeInput, setNeighborhoodSizeInput] = useState(3);
-
-  const trainingStep = useTwoDimensionTrainingStep(
-    data,
-    setData,
-    iteration,
-    setIteration,
-    isLearningRateVariable,
-    learningRateInput,
-    isNeighborhoodSizeVariable,
-    neighborhoodSizeInput
-  );
-
-  useEffect(() => {
-    let intervalId;
-    if (isTraining) {
-      intervalId = setInterval(trainingStep, 100 - speed);
-    }
-    return () => clearInterval(intervalId);
-  }, [isTraining, trainingStep, speed]);
-
-  useEffect(() => {
-    generateData();
-  }, [generateData, shape, inputSize]);
+  const [metrics, setMetrics] = useState([]);
+  const [error, setError] = useState(0);
+  const [selectedPalette, setSelectedPalette] = useState("default");
+  const [customColors, setCustomColors] = useState({
+    dataPoints: "#000000",
+    weights: "#ef4444",
+    opacity: 0.6,
+  });
 
   const currentLearningRate = useMemo(
     () =>
@@ -67,15 +54,99 @@ const TwoDimension = () => {
     [isNeighborhoodSizeVariable, iteration, inputSize, neighborhoodSizeInput]
   );
 
+  const trainingStep = useTwoDimensionTrainingStep(
+    data,
+    setData,
+    iteration,
+    setIteration,
+    isLearningRateVariable,
+    learningRateInput,
+    isNeighborhoodSizeVariable,
+    neighborhoodSizeInput
+  );
+
+  const calculateError = useCallback(() => {
+    if (!data.X || !data.W || data.X.length === 0 || data.W.length === 0) {
+      return 0;
+    }
+
+    let totalError = 0;
+    const dataPoints = data.X;
+    const weights = data.W;
+
+    dataPoints.forEach((point) => {
+      let minDistance = Infinity;
+      weights.forEach((weight) => {
+        const dx = point.x - weight.x;
+        const dy = point.y - weight.y;
+        const distance = dx * dx + dy * dy;
+        minDistance = Math.min(minDistance, distance);
+      });
+      totalError += minDistance;
+    });
+
+    return Math.sqrt(totalError / dataPoints.length);
+  }, [data]);
+
+  const handleGenerateData = useCallback(() => {
+    setIteration(0);
+    setMetrics([]);
+    generateData();
+  }, [generateData]);
+
+  const handleTrainingToggle = useCallback(() => {
+    setIsTraining((prev) => !prev);
+  }, []);
+
+  useEffect(() => {
+    const currentError = calculateError();
+    setError(currentError);
+
+    if (isTraining) {
+      setMetrics((prev) => [
+        ...prev,
+        {
+          iteration,
+          error: currentError,
+          learningRate: currentLearningRate,
+          neighborhoodSize,
+        },
+      ]);
+    }
+  }, [
+    iteration,
+    calculateError,
+    isTraining,
+    currentLearningRate,
+    neighborhoodSize,
+  ]);
+
+  useEffect(() => {
+    let intervalId;
+    if (isTraining) {
+      intervalId = setInterval(trainingStep, 100 - speed);
+    }
+    return () => clearInterval(intervalId);
+  }, [isTraining, trainingStep, speed]);
+
+  useEffect(() => {
+    handleGenerateData();
+  }, [handleGenerateData]);
+
   return (
     <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-800">
           Two Dimension Visualization
         </h2>
-        <span className="bg-gray-100 px-3 py-1 rounded-full text-gray-700">
-          Iteration: {iteration}
-        </span>
+        <div className="flex items-center gap-4">
+          <span className="bg-gray-100 px-3 py-1 rounded-full text-gray-700">
+            Iteration: {iteration}
+          </span>
+          <span className="bg-gray-100 px-3 py-1 rounded-full text-gray-700">
+            Error: {error.toFixed(4)}
+          </span>
+        </div>
       </div>
       <div className="bg-white rounded-lg mb-6">
         <ResponsiveContainer width="100%" height={300}>
@@ -101,17 +172,26 @@ const TwoDimension = () => {
             <Scatter
               name="Data Points"
               data={data.X}
-              fill={(entry) => (entry.label === 0 ? "#8884d8" : "#000000")}
-              opacity={0.6}
+              fill={customColors.dataPoints}
+              opacity={customColors.opacity}
             />
             <Scatter
               name="Weights"
               data={data.W}
-              fill="#ff0000"
+              fill={customColors.weights}
               shape="cross"
             />
           </ScatterChart>
         </ResponsiveContainer>
+
+        <ColorPicker
+          selectedPalette={selectedPalette}
+          onPaletteChange={setSelectedPalette}
+          customColors={customColors}
+          onCustomColorChange={setCustomColors}
+        />
+
+        <MetricsChart metrics={metrics} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-4">
@@ -246,7 +326,7 @@ const TwoDimension = () => {
 
         <div className="flex justify-center space-x-4">
           <button
-            onClick={() => setIsTraining(!isTraining)}
+            onClick={handleTrainingToggle}
             className={`px-6 py-2 rounded-lg font-medium ${
               isTraining
                 ? "bg-red-500 hover:bg-red-600 text-white"
@@ -256,10 +336,7 @@ const TwoDimension = () => {
             {isTraining ? "Stop" : "Start"}
           </button>
           <button
-            onClick={() => {
-              setIteration(0);
-              generateData();
-            }}
+            onClick={handleGenerateData}
             className="px-6 py-2 rounded-lg font-medium bg-gray-200 hover:bg-gray-300 text-gray-700"
           >
             Reset

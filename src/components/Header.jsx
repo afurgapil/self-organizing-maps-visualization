@@ -46,6 +46,16 @@ const Header = () => {
             >
               2D
             </Link>
+            <Link
+              to="/three-dimension"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                location.pathname === "/three-dimension"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 dark:from-blue-600 dark:to-indigo-600 text-white shadow-md"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+            >
+              3D
+            </Link>
             <ThemeToggle />
           </div>
         </div>

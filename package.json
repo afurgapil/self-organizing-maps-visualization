@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^9.121.5",
+    "@react-three/fiber": "^8.17.14",
     "@techstark/opencv-js": "^4.10.0-release.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
-    "recharts": "^2.13.3"
+    "recharts": "^2.13.3",
+    "three": "^0.173.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

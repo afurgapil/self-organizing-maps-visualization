@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import TwoDim from "./features/TwoDim";
 import OneDimension from "./pages/OneDimension";
 import TwoDimension from "./pages/TwoDimension";
+import ThreeDimension from "./pages/ThreeDimension";
 // import FeatureSelection from "./features/FeatureSelection";
 import Header from "./components/Header";
 import Layout from "./layout/Layout";
@@ -17,6 +18,11 @@ function RouterApp() {
     { path: "/", component: Home, name: "Home" },
     { path: "/one-dimension", component: OneDimension, name: "One Dimension" },
     { path: "/two-dimension", component: TwoDimension, name: "Two Dimension " },
+    {
+      path: "/three-dimension",
+      component: ThreeDimension,
+      name: "Three Dimension ",
+    },
     // {
     //   path: "/feature-selection",
     //   component: FeatureSelection,

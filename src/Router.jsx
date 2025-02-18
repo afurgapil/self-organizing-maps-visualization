@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 // import App from "./features/App";
 // import Color from "./features/Color";
 // import Fapp from "./features/Fapp";
@@ -17,11 +17,11 @@ function RouterApp() {
   const publicRoutes = [
     { path: "/", component: Home, name: "Home" },
     { path: "/one-dimension", component: OneDimension, name: "One Dimension" },
-    { path: "/two-dimension", component: TwoDimension, name: "Two Dimension " },
+    { path: "/two-dimension", component: TwoDimension, name: "Two Dimension" },
     {
       path: "/three-dimension",
       component: ThreeDimension,
-      name: "Three Dimension ",
+      name: "Three Dimension",
     },
     // {
     //   path: "/feature-selection",
@@ -36,7 +36,7 @@ function RouterApp() {
   ];
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
         <Header params={publicRoutes} />
         <Routes>
@@ -49,7 +49,7 @@ function RouterApp() {
           ))}
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
